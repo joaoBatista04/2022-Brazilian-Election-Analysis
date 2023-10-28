@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.File;
 import java.nio.charset.Charset;
 
+import domain.Eleicao;
+
 public class InputServices {
     public static BufferedReader createBufferedReader(String path) throws IOException{
         try {
@@ -14,5 +16,9 @@ public class InputServices {
         } catch (IOException e) {
             throw e;
         }
+    }
+
+    public static void processarArquivoCandidatos(BufferedReader bufferCandidatos, Eleicao eleicao){
+        
     }
 }
