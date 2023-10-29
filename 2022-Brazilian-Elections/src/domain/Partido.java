@@ -48,4 +48,7 @@ public class Partido {
     }
 
     //=========================================== GETTERS ===========================================
+    public String getSiglaDoPartido(){
+        return this.siglaPartido;
+    }
 }

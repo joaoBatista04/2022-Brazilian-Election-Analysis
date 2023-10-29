@@ -50,4 +50,13 @@ public class Eleicao {
     public LocalDate getDataEleicao() {
         return dataEleicao;
     }
+
+    //=========================================== SETTERS ===========================================
+    public Partido addPartido(int numeroPartido, String siglaPartido, int numeroFederacao){
+        Partido p = new Partido(numeroPartido, siglaPartido, numeroFederacao);
+
+        this.partidos.put(numeroPartido, p);
+
+        return p;
+    }
 }
