@@ -10,9 +10,9 @@ import util.io.InputServices;
 public class App {
     public static void main(String[] args) throws Exception{
         int tipo;
-        if(args[0] == "--estadual"){
+        if(args[0].compareTo("--estadual") == 0){
             tipo = 6;
-        } else if(args[0] == "--federal"){
+        } else if(args[0].compareTo("--federal") == 0){
             tipo = 7;
         } else{
             throw new Exception("Argumento inválido para o tipo de eleição!");
@@ -41,5 +41,11 @@ public class App {
         }
 
         Eleicao eleicao = new Eleicao(tipo, LocalDate.of(ano, mes, dia));
+
+        try {
+            InputServices.processarArquivoCandidatos(bufferCandidatos, eleicao);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }
