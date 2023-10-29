@@ -2,11 +2,9 @@ package domain;
 
 import java.time.LocalDate;
 
-public class Candidato {
+public class Candidato implements Comparable<Candidato>{
     
     //=========================================== ATTRIBUTES ===========================================
-    private int codigoCargo;
-    private int codigoSituacaoCandidatoTot;
     private int numeroCandidato;
     private String nomeCandidatoUrna;
     private LocalDate dataDeNascimento;
@@ -29,9 +27,7 @@ public class Candidato {
      * @param nomeTipoDestinacaoVotos
      * @param partidoCandidato
      */
-    public Candidato(int codigoCargo, int codigoSituacaoCandidatoTot, int numeroCandidato, String nomeCandidatoUrna, LocalDate dataDeNascimento, boolean codigoSituacaoTotalTurno, int codigoGenero, String nomeTipoDestinacaoVotos, Partido partidoCandidato){
-        this.codigoCargo = codigoCargo;
-        this.codigoSituacaoCandidatoTot = codigoSituacaoCandidatoTot;
+    public Candidato(int numeroCandidato, String nomeCandidatoUrna, LocalDate dataDeNascimento, boolean codigoSituacaoTotalTurno, int codigoGenero, String nomeTipoDestinacaoVotos, Partido partidoCandidato){
         this.numeroCandidato = numeroCandidato;
         this.nomeCandidatoUrna = nomeCandidatoUrna;
         this.dataDeNascimento = dataDeNascimento;
@@ -65,20 +61,6 @@ public class Candidato {
     }
 
     //=========================================== GETTERS ===========================================
-    /**
-     * @return (int) codigoCargo
-     */
-    public int getCodigoCargo(){
-        return this.codigoCargo;
-    }
-
-    /**
-     * @return (int) codigoSituacaoCandidatoTot
-     */
-    public int codigoSituacaoCandidatoTot(){
-        return this.codigoSituacaoCandidatoTot;
-    }
-
     /**
      * @return (int) numeroCandidato
      */
@@ -147,5 +129,25 @@ public class Candidato {
      */
     public Partido getPartidoCandidato() {
         return this.partidoCandidato;
+    }
+
+    //=========================================== COMPARABLES AND OVERRIDES ===========================================
+    @Override
+    public int compareTo(Candidato o) {
+        if (this.quantidadeVotos < o.getQuantidadeVotos())
+            return 1;
+        if (this.quantidadeVotos > o.getQuantidadeVotos())
+            return -1;
+        if (this.dataDeNascimento.compareTo(o.getDataDeNascimento()) < 0)
+            return -1;
+        if (this.dataDeNascimento.compareTo(o.getDataDeNascimento()) > 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return this.nomeCandidatoUrna + " (" + this.partidoCandidato.getSiglaDoPartido() + ", " + this.quantidadeVotos + " votos)";
     }
 }

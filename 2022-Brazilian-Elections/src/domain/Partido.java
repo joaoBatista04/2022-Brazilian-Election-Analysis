@@ -51,4 +51,8 @@ public class Partido {
     public String getSiglaDoPartido(){
         return this.siglaPartido;
     }
+
+    public int getFederacaoPartido(){
+        return this.numeroFederacao;
+    }
 }
