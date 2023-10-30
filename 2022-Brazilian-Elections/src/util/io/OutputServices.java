@@ -119,17 +119,7 @@ public class OutputServices {
         System.out.print("\n");
     }
 
-    private static String filtroSingularPlural(int value, String out) {
-        if (value > 1) {
-            if (out.compareTo("nominal") == 0) {
-                return "nominais";
-            }
-            return out.concat("s");
-        }
-        return out;
-    }
-
-    private static void votacaoPartidosCandidatosEleitos(Eleicao eleicao, NumberFormat nf){
+    private static void votacaoPartidosCandidatosEleitos(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Votação dos partidos e número de candidatos eleitos:");
 
         String vot, nom, cand, ele;
@@ -151,7 +141,7 @@ public class OutputServices {
         System.out.print("\n");
     }
 
-    private static void primeiroEUltimoCandidatoDosPartidos(Eleicao eleicao, NumberFormat nf){
+    private static void primeiroEUltimoCandidatoDosPartidos(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Primeiro e último colocados de cada partido:");
 
         String maisVot, menosVot;
@@ -168,7 +158,7 @@ public class OutputServices {
         System.out.print("\n");
     }
 
-    private static void eleitosPorIdade(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec){
+    private static void eleitosPorIdade(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec) throws NumberFormatException{
         System.out.println("Eleitos, por faixa etária (na data da eleição):");
 
         int totalEleitos = eleicao.getNumeroDeVagasDaEleicao();
@@ -192,7 +182,7 @@ public class OutputServices {
         System.out.printf("60 <= Idade     : %s (%s%%)\n\n", nf.format(f5), nfDec.format(p5));
     }
 
-    private static void eleitosPorGenero(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec){
+    private static void eleitosPorGenero(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec) throws NumberFormatException{
         int totalEleitos = eleicao.getNumeroDeVagasDaEleicao();
         System.out.println("Eleitos, por gênero:");
 
@@ -206,7 +196,7 @@ public class OutputServices {
         System.out.printf("Masculino: %s (%s%%)\n\n", nf.format(homens), nfDec.format(pHomens));
     }
 
-    private static void totalVotos(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec){
+    private static void totalVotos(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec) throws NumberFormatException{
         int votosValidos = eleicao.getVotosLegenda() + eleicao.getVotosNominais();
         int votosNominais = eleicao.getVotosNominais();
         int votosLegendas = eleicao.getVotosLegenda();
@@ -217,5 +207,15 @@ public class OutputServices {
         System.out.printf("Total de votos válidos:    %s\n", nf.format(votosValidos));
         System.out.printf("Total de votos nominais:   %s (%s%%)\n", nf.format(votosNominais), nfDec.format(pVotosNominais));
         System.out.printf("Total de votos de legenda: %s (%s%%)\n", nf.format(votosLegendas), nfDec.format(pVotosLegendas));
+    }
+
+    private static String filtroSingularPlural(int value, String out) {
+        if (value > 1) {
+            if (out.compareTo("nominal") == 0) {
+                return "nominais";
+            }
+            return out.concat("s");
+        }
+        return out;
     }
 }
