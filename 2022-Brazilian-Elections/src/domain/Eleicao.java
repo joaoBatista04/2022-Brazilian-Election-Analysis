@@ -1,10 +1,13 @@
 package domain;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import util.comparators.PartidoComparadorPorCandidato;
 
 public class Eleicao {
     
@@ -85,7 +88,7 @@ public class Eleicao {
         this.votosLegenda += votosLegenda;
     }
 
-    //=========================================== SPECIAL GETTERS ===========================================
+    //=========================================== SPECIAL GETTERS CANDIDATOS ===========================================
     public int getNumeroDeVagasDaEleicao(){
         int resultado = 0;
         var c = new ArrayList<Candidato>(candidatos.values());
@@ -171,5 +174,77 @@ public class Eleicao {
         eleitosProporcional.sort(null);
 
         return eleitosProporcional;
+    }
+
+    //=========================================== SPECIAL GETTERS PARTIDOS ===========================================
+    public List<Partido> getPartidosList(){
+        var p = new ArrayList<Partido>(this.partidos.values());
+
+        p.sort(null);
+
+        for(int i = 0; i < p.size(); i++){
+            p.get(i).setPosicao(i + 1);
+        }
+
+        return p;
+    }
+
+    public List<Partido> getPartidosOrdenadosPorCandidatos(){
+        var listaPartidos = new ArrayList<Partido>();
+
+        for(Partido p : getPartidosList()){
+            if(p.getVotosTotais() > 0 && p.getCandidatosList().size() != 0){
+                listaPartidos.add(p);
+            }
+        }
+
+        PartidoComparadorPorCandidato comparador = new PartidoComparadorPorCandidato();
+
+        listaPartidos.sort(comparador);
+
+        for(int i = 0; i < listaPartidos.size(); i++){
+            listaPartidos.get(i).setPosicao(i + 1);
+        }
+
+        return listaPartidos;
+    }
+
+    public int quantidadeEleitosPorIdade(int comeco, int fim){
+        int total = 0;
+        long diff = 0;
+
+        for(Candidato c : getCandidatosEleitos()){
+            diff = c.getDataDeNascimento().until(this.dataEleicao, ChronoUnit.YEARS);
+
+            if(diff >= comeco && diff < fim){
+                total++;
+            }
+        }
+
+        return total;
+    }
+
+    public int quantidadeHomensEleitos(){
+        int total = 0;
+
+        for(Candidato c : getCandidatosEleitos()){
+            if(c.getCodigoGenero() == 2){
+                total++;
+            }
+        }
+
+        return total;
+    }
+
+    public int quantidadeMulheresEleitas(){
+        int total = 0;
+
+        for(Candidato c : getCandidatosEleitos()){
+            if(c.getCodigoGenero() == 4){
+                total++;
+            }
+        }
+
+        return total;
     }
 }
