@@ -9,6 +9,8 @@ import java.util.Map;
 
 import util.comparators.PartidoComparadorPorCandidato;
 
+import util.enums.TipoEleicao;
+
 public class Eleicao {
     
     //=========================================== ATTRIBUTES ===========================================
@@ -19,11 +21,18 @@ public class Eleicao {
     private int votosNominais;
     private int votosLegenda;
 
-    private int tipoEleicao;
+    private TipoEleicao tipoEleicao;
     private LocalDate dataEleicao;
 
     public Eleicao(int tipoEleicao, LocalDate dataEleicao){
-        this.tipoEleicao = tipoEleicao;
+        if(tipoEleicao == 7){
+            this.tipoEleicao = TipoEleicao.ESTADUAL;
+        }
+
+        if(tipoEleicao == 6){
+            this.tipoEleicao = TipoEleicao.FEDERAL;
+        }
+
         this.dataEleicao = dataEleicao;
 
         this.votosNominais = 0;
@@ -52,7 +61,13 @@ public class Eleicao {
     }
 
     public int getTipoEleicao() {
-        return tipoEleicao;
+        if(this.tipoEleicao == TipoEleicao.ESTADUAL){
+            return 7;
+        } else if(this.tipoEleicao == TipoEleicao.FEDERAL){
+            return 6;
+        } else{
+            return 7;
+        }
     }
 
     public LocalDate getDataEleicao() {

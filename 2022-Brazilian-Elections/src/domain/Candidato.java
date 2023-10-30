@@ -2,6 +2,8 @@ package domain;
 
 import java.time.LocalDate;
 
+import util.enums.Genero;
+
 public class Candidato implements Comparable<Candidato>{
     
     //=========================================== ATTRIBUTES ===========================================
@@ -9,7 +11,7 @@ public class Candidato implements Comparable<Candidato>{
     private String nomeCandidatoUrna;
     private LocalDate dataDeNascimento;
     private boolean codigoSituacaoTotalTurno;
-    private int codigoGenero;
+    private Genero genero;
     private String nomeTipoDestinacaoVotos;
     private int quantidadeVotos;
     private int eleitoPosicao;
@@ -32,10 +34,17 @@ public class Candidato implements Comparable<Candidato>{
         this.nomeCandidatoUrna = nomeCandidatoUrna;
         this.dataDeNascimento = dataDeNascimento;
         this.codigoSituacaoTotalTurno = codigoSituacaoTotalTurno;
-        this.codigoGenero = codigoGenero;
         this.nomeTipoDestinacaoVotos = nomeTipoDestinacaoVotos;
         this.partidoCandidato = partidoCandidato;
         this.quantidadeVotos = 0;
+
+        if(codigoGenero == 2){
+            this.genero = Genero.MASCULINO;
+        } else if(codigoGenero == 4){
+            this.genero = Genero.FEMININO;
+        } else{
+            this.genero = Genero.FEMININO;
+        }
     }
 
     //=========================================== SETTERS ===========================================
@@ -93,7 +102,15 @@ public class Candidato implements Comparable<Candidato>{
      * @return (int) Codigo de Genero
      */
     public int getCodigoGenero(){
-        return this.codigoGenero;
+        if(this.genero == Genero.MASCULINO){
+            return 2;
+        }
+
+        if(this.genero == Genero.FEMININO){
+            return 4;
+        }
+
+        return 4;
     }
 
     /**
