@@ -15,6 +15,12 @@ import util.exceptions.ExceptionProcessamentoArquivoVotacao;
 import util.exceptions.ExceptionProcessamentoArquivosCandidatos;
 
 public class InputServices {
+    /**
+     * 
+     * @param path
+     * @return BufferedReader Leitor de Arquivo .csv
+     * @throws IOException
+     */
     public static BufferedReader createBufferedReader(String path) throws IOException{
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(path), Charset.forName("ISO-8859-1")));
@@ -24,6 +30,12 @@ public class InputServices {
         }
     }
 
+    /**
+     * 
+     * @param bufferCandidatos
+     * @param eleicao
+     * @throws ExceptionProcessamentoArquivosCandidatos
+     */
     public static void processarArquivoCandidatos(BufferedReader bufferCandidatos, Eleicao eleicao) throws ExceptionProcessamentoArquivosCandidatos{
         try {
             String currentLine;
@@ -54,6 +66,12 @@ public class InputServices {
         }
     }
 
+    /**
+     * 
+     * @param bufferVotacao
+     * @param eleicao
+     * @throws ExceptionProcessamentoArquivoVotacao
+     */
     public static void processarArquivoVotacao(BufferedReader bufferVotacao, Eleicao eleicao) throws ExceptionProcessamentoArquivoVotacao{
         String currentLine;
         String[] currentData;
@@ -77,6 +95,11 @@ public class InputServices {
         }
     }
 
+    /**
+     * 
+     * @param currentLine
+     * @return String[] Linha do Arquivo .csv Separada em um Vetor de Strings
+     */
     private static String[] inputFormatter(String currentLine){
         String[] currentData = currentLine.split(";");
         
@@ -87,6 +110,12 @@ public class InputServices {
         return currentData;
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param currentData
+     * @return Partido Atualiza a Lista de Partidos da Eleicao
+     */
     private static Partido updatePartidos(Eleicao eleicao, String[] currentData){
         int numeroPartido;
         int numeroFederacao;
@@ -107,6 +136,14 @@ public class InputServices {
         return eleicao.addPartido(numeroPartido, siglaPartido, numeroFederacao);
     }
 
+    /**
+     * 
+     * @param codigoCargo
+     * @param codigoDetalhesSituacaoCandidato
+     * @param tipoEleicao
+     * @return boolean Verifica se o Candidato recebeu Votos Validos
+     * @throws NumberFormatException
+     */
     private static boolean isValidCandidato(String codigoCargo, String codigoDetalhesSituacaoCandidato, int tipoEleicao) throws NumberFormatException{
         int codigoCargoCandidato;
         int codigoDetalhesSituacao;
@@ -126,6 +163,13 @@ public class InputServices {
         return false;
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param currentData
+     * @param partido
+     * @throws NumberFormatException
+     */
     private static void updateCandidato(Eleicao eleicao, String[] currentData, Partido partido) throws NumberFormatException{
         int dia;
         int mes;
@@ -156,6 +200,12 @@ public class InputServices {
         }
     }
 
+    /**
+     * 
+     * @param situacao
+     * @return boolean Verifica se o Candidato foi Eleito
+     * @throws NumberFormatException
+     */
     private static boolean isCandidatoEleito(String situacao) throws NumberFormatException{
         int situation;
 
@@ -173,6 +223,13 @@ public class InputServices {
         return false;
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param currentData
+     * @param partido
+     * @throws NumberFormatException
+     */
     private static void updateCandidatosInvalidos(Eleicao eleicao, String[] currentData, Partido partido) throws NumberFormatException{
         int numeroCandidato;
 
@@ -186,6 +243,14 @@ public class InputServices {
         eleicao.addLegendaPartidoCandidatos(numeroCandidato, partido);
     }
 
+    /**
+     * 
+     * @param codigoCargo
+     * @param tipoEleicao
+     * @param numeroVotavel
+     * @return boolean Verifica se o Voto eh Valido
+     * @throws NumberFormatException
+     */
     private static boolean isVotoValido(String codigoCargo, int tipoEleicao, String numeroVotavel) throws NumberFormatException{
         int cdC, nrV;
 
@@ -204,6 +269,12 @@ public class InputServices {
         return false;
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param currentData
+     * @throws NumberFormatException
+     */
     private static void processarVotosCandidatoValido(Eleicao eleicao, String[] currentData) throws NumberFormatException{
         int nrVotavel, qntdVotos;
 
@@ -227,6 +298,12 @@ public class InputServices {
         }
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param currentData
+     * @throws NumberFormatException
+     */
     private static void processarVotosCandidatoInvalido(Eleicao eleicao, String[] currentData) throws NumberFormatException{
         int nrVotavel, qntdVotos;
 

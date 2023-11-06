@@ -12,6 +12,7 @@ import util.exceptions.ExceptionDataEleicao;
 
 public class App {
     public static void main(String[] args) throws Exception{
+        //Definicao do tipo da eleicao
         int tipo;
         if(args[0].compareTo("--estadual") == 0){
             tipo = 7;
@@ -21,6 +22,7 @@ public class App {
             throw new Exception("Argumento inválido para o tipo de eleição!");
         }
 
+        //Criacao dos BufferedReaders para leitura dos arquivos .csv
         BufferedReader bufferCandidatos, bufferVotacao;
         try{
             bufferCandidatos = InputServices.createBufferedReader(args[1]);
@@ -33,6 +35,7 @@ public class App {
             throw new ExceptionArquivoPartidos();
         }
 
+        //Definicao da data da eleicao
         String[] data = args[3].split("/");
         int dia, mes, ano;
         try{
@@ -43,12 +46,15 @@ public class App {
             throw new ExceptionDataEleicao();
         }
 
+        //Criacao da eleicao
         Eleicao eleicao = new Eleicao(tipo, LocalDate.of(ano, mes, dia));
 
         try {
+            //Leitura dos arquivos .csv e atualizacao das informacoes da eleicao
             InputServices.processarArquivoCandidatos(bufferCandidatos, eleicao);
             InputServices.processarArquivoVotacao(bufferVotacao, eleicao);
 
+            //Geracao dos relatorios da eleicao baseado nos dados lidos
             OutputServices.geracaoDeRelatorios(eleicao);
         } catch (Exception e) {
             throw e;

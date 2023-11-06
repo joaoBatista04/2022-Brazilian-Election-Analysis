@@ -24,6 +24,11 @@ public class Eleicao {
     private TipoEleicao tipoEleicao;
     private LocalDate dataEleicao;
 
+    /**
+     * 
+     * @param tipoEleicao
+     * @param dataEleicao
+     */
     public Eleicao(int tipoEleicao, LocalDate dataEleicao){
         if(tipoEleicao == 7){
             this.tipoEleicao = TipoEleicao.ESTADUAL;
@@ -40,26 +45,50 @@ public class Eleicao {
     }
 
     //=========================================== GETTERS ===========================================
+    /**
+     * 
+     * @return Map<Integer, Candidato> Candidatos da Eleicao
+     */
     public Map<Integer, Candidato> getCandidatos() {
         return new HashMap<>(this.candidatos);
     }
 
+    /**
+     * 
+     * @return Map<Integer, Partido> Partidos da Eleicao
+     */
     public Map<Integer, Partido> getPartidos() {
         return new HashMap<>(this.partidos);
     }
 
+    /**
+     * 
+     * @return Mpa<Integer, Partido> Partidos dos Candidatos da Eleicao
+     */
     public Map<Integer, Partido> getLegendasPartidosCandidatos() {
         return new HashMap<>(this.legendasPartidosCandidatos);
     }
 
+    /**
+     * 
+     * @return int Quantidade de Votos Nominais
+     */
     public int getVotosNominais() {
         return votosNominais;
     }
 
+    /**
+     * 
+     * @return int Quantidade de Votos em Partidos
+     */
     public int getVotosLegenda() {
         return votosLegenda;
     }
 
+    /**
+     * 
+     * @return int Tipo da Eleicao (ESTADUAL = 7, FEDERAL = 6)
+     */
     public int getTipoEleicao() {
         if(this.tipoEleicao == TipoEleicao.ESTADUAL){
             return 7;
@@ -70,11 +99,22 @@ public class Eleicao {
         }
     }
 
+    /**
+     * 
+     * @return LocalDate Data da Eleicao
+     */
     public LocalDate getDataEleicao() {
         return dataEleicao;
     }
 
     //=========================================== SETTERS ===========================================
+    /**
+     * 
+     * @param numeroPartido
+     * @param siglaPartido
+     * @param numeroFederacao
+     * @return Partido Adiciona Partido na Eleicao
+     */
     public Partido addPartido(int numeroPartido, String siglaPartido, int numeroFederacao){
         Partido p = new Partido(numeroPartido, siglaPartido, numeroFederacao);
 
@@ -83,6 +123,16 @@ public class Eleicao {
         return p;
     }
 
+    /**
+     * 
+     * @param numeroCandidato
+     * @param nomeCandidatoUrna
+     * @param nomeTipoDestinoVotos
+     * @param dataNascimento
+     * @param situacao
+     * @param codigoGenero
+     * @param partido
+     */
     public void addCandidato(int numeroCandidato, String nomeCandidatoUrna, String nomeTipoDestinoVotos, LocalDate dataNascimento, boolean situacao, int codigoGenero, Partido partido){
         Candidato c = new Candidato(numeroCandidato, nomeCandidatoUrna, dataNascimento, situacao, codigoGenero, nomeTipoDestinoVotos, partido);
 
@@ -91,19 +141,36 @@ public class Eleicao {
         partido.setCandidatosDoPartido(c);
     }
 
+    /**
+     * 
+     * @param numeroCandidato
+     * @param partido
+     */
     public void addLegendaPartidoCandidatos(int numeroCandidato, Partido partido){
         this.legendasPartidosCandidatos.put(numeroCandidato, partido);
     }
 
+    /**
+     * 
+     * @param votosNominais
+     */
     public void setVotosNominais(int votosNominais){
         this.votosNominais += votosNominais;
     }
 
+    /**
+     * 
+     * @param votosLegenda
+     */
     public void setVotosLegenda(int votosLegenda){
         this.votosLegenda += votosLegenda;
     }
 
     //=========================================== SPECIAL GETTERS CANDIDATOS ===========================================
+    /**
+     * 
+     * @return int Numero de Vagas da Eleicao
+     */
     public int getNumeroDeVagasDaEleicao(){
         int resultado = 0;
         var c = new ArrayList<Candidato>(candidatos.values());
@@ -117,6 +184,10 @@ public class Eleicao {
         return resultado;
     }
 
+    /**
+     * 
+     * @return List<Candidato> Candidatos Eleitos
+     */
     public List<Candidato> getCandidatosEleitos(){
         var candidatosEleitos = new ArrayList<Candidato>();
 
@@ -135,6 +206,10 @@ public class Eleicao {
         return candidatosEleitos;
     }
 
+    /**
+     * 
+     * @return List<Candidato> Todos os Candidatos da Eleicao
+     */
     public List<Candidato> getTodosOsCandidatos(){
         var c = new ArrayList<Candidato>(candidatos.values());
 
@@ -147,6 +222,10 @@ public class Eleicao {
         return c;
     }
 
+    /**
+     * 
+     * @return List<Candidato> Candidatos Mais Votados da Eleicao
+     */
     public List<Candidato> getCandidatosMaisVotados(){
         int quantidadeVagas = getNumeroDeVagasDaEleicao();
         var todosOsCandidatos = getTodosOsCandidatos();
@@ -161,6 +240,10 @@ public class Eleicao {
         return candidatosMaisVotados;
     }
 
+    /**
+     * 
+     * @return List<Candidato> Candidatos Eleitos se a Eleicao fosse Majoritaria
+     */
     public List<Candidato> getCandidatosEleitosSeEleicaoMajoritaria(){
         var eleicaoMajoritaria = new ArrayList<Candidato>();
         var eleitos = getCandidatosEleitos();
@@ -176,6 +259,10 @@ public class Eleicao {
         return eleicaoMajoritaria;
     }
 
+    /**
+     * 
+     * @return List<Candidato> Candidatos Eleitos somente pelo Sistema Proporcional de Eleicao
+     */
     public List<Candidato> getCandidatosEleitosProporcional(){
         var eleitosProporcional = new ArrayList<Candidato>();
         var maisVotados = getCandidatosMaisVotados();
@@ -192,6 +279,10 @@ public class Eleicao {
     }
 
     //=========================================== SPECIAL GETTERS PARTIDOS ===========================================
+    /**
+     * 
+     * @return List<Partido> Lista de Partidos da Eleicao
+     */
     public List<Partido> getPartidosList(){
         var p = new ArrayList<Partido>(this.partidos.values());
 
@@ -204,6 +295,10 @@ public class Eleicao {
         return p;
     }
 
+    /**
+     * 
+     * @return List<Partido> Lista de Partidos Ordenados por Candidatos
+     */
     public List<Partido> getPartidosOrdenadosPorCandidatos(){
         var listaPartidos = new ArrayList<Partido>();
 
@@ -224,6 +319,12 @@ public class Eleicao {
         return listaPartidos;
     }
 
+    /**
+     * 
+     * @param comeco
+     * @param fim
+     * @return int Quantidade de Candidatos Eleitos por Faixa Etaria
+     */
     public int quantidadeEleitosPorIdade(int comeco, int fim){
         int total = 0;
         long diff = 0;
@@ -239,6 +340,10 @@ public class Eleicao {
         return total;
     }
 
+    /**
+     * 
+     * @return int Quantidade de Homens Eleitos
+     */
     public int quantidadeHomensEleitos(){
         int total = 0;
 
@@ -251,6 +356,10 @@ public class Eleicao {
         return total;
     }
 
+    /**
+     * 
+     * @return int Quantidade de Mulheres Eleitas
+     */
     public int quantidadeMulheresEleitas(){
         int total = 0;
 

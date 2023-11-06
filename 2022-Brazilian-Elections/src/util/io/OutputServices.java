@@ -9,6 +9,11 @@ import domain.Partido;
 import util.exceptions.ExceptionGeracaoDeRelatorios;
 
 public class OutputServices {
+    /**
+     * 
+     * @param eleicao
+     * @throws ExceptionGeracaoDeRelatorios
+     */
     public static void geracaoDeRelatorios(Eleicao eleicao) throws ExceptionGeracaoDeRelatorios{
         Locale localeBr = Locale.forLanguageTag("pt-br");
         NumberFormat nf = NumberFormat.getInstance(localeBr);
@@ -33,11 +38,23 @@ public class OutputServices {
         }
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @throws NumberFormatException
+     */
     private static void numeroDeVagasEleicao(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Número de vagas: " + nf.format(eleicao.getNumeroDeVagasDaEleicao()));
         System.out.print("\n");
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @throws NumberFormatException
+     */
     private static void candidatosEleitos(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         String tipoEleicao = "";
         String vot;
@@ -66,6 +83,12 @@ public class OutputServices {
         System.out.print("\n");
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @throws NumberFormatException
+     */
     private static void candidatosMaisVotados(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Candidatos mais votados (em ordem decrescente de votação e respeitando número de vagas):");
 
@@ -83,6 +106,12 @@ public class OutputServices {
         System.out.print("\n");
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @throws NumberFormatException
+     */
     private static void candidatosPrejudicados(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Teriam sido eleitos se a votação fosse majoritária, e não foram eleitos:");
         System.out.println("(com sua posição no ranking de mais votados)");
@@ -101,6 +130,12 @@ public class OutputServices {
         System.out.print("\n");
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @throws NumberFormatException
+     */
     private static void candidatosBeneficiados(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Eleitos, que se beneficiaram do sistema proporcional:");
         System.out.println("(com sua posição no ranking de mais votados)");
@@ -119,6 +154,12 @@ public class OutputServices {
         System.out.print("\n");
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @throws NumberFormatException
+     */
     private static void votacaoPartidosCandidatosEleitos(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Votação dos partidos e número de candidatos eleitos:");
 
@@ -141,6 +182,12 @@ public class OutputServices {
         System.out.print("\n");
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @throws NumberFormatException
+     */
     private static void primeiroEUltimoCandidatoDosPartidos(Eleicao eleicao, NumberFormat nf) throws NumberFormatException{
         System.out.println("Primeiro e último colocados de cada partido:");
 
@@ -158,6 +205,13 @@ public class OutputServices {
         System.out.print("\n");
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @param nfDec
+     * @throws NumberFormatException
+     */
     private static void eleitosPorIdade(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec) throws NumberFormatException{
         System.out.println("Eleitos, por faixa etária (na data da eleição):");
 
@@ -182,6 +236,13 @@ public class OutputServices {
         System.out.printf("60 <= Idade     : %s (%s%%)\n\n", nf.format(f5), nfDec.format(p5));
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @param nfDec
+     * @throws NumberFormatException
+     */
     private static void eleitosPorGenero(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec) throws NumberFormatException{
         int totalEleitos = eleicao.getNumeroDeVagasDaEleicao();
         System.out.println("Eleitos, por gênero:");
@@ -196,6 +257,13 @@ public class OutputServices {
         System.out.printf("Masculino: %s (%s%%)\n\n", nf.format(homens), nfDec.format(pHomens));
     }
 
+    /**
+     * 
+     * @param eleicao
+     * @param nf
+     * @param nfDec
+     * @throws NumberFormatException
+     */
     private static void totalVotos(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec) throws NumberFormatException{
         int votosValidos = eleicao.getVotosLegenda() + eleicao.getVotosNominais();
         int votosNominais = eleicao.getVotosNominais();
@@ -209,6 +277,12 @@ public class OutputServices {
         System.out.printf("Total de votos de legenda: %s (%s%%)\n", nf.format(votosLegendas), nfDec.format(pVotosLegendas));
     }
 
+    /**
+     * 
+     * @param value
+     * @param out
+     * @return String Frase Formatada para Plural ou Singular baseado no Numero de Votos ou Eleitos obtido
+     */
     private static String filtroSingularPlural(int value, String out) {
         if (value > 1) {
             if (out.compareTo("nominal") == 0) {
