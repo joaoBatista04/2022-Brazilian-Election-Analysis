@@ -1,0 +1,176 @@
+@startuml src.domain
+
+class App{
+    +{static}main()
+}
+
+package "domain" #DDDDDD{
+    class Candidato{
+        -numeroCandidato: int
+        -nomeCandidatoUrna: String
+        -dataDeNascimento: LocalDate
+        -codigoSituacaoTotalTurno: boolean
+        -genero: Genero
+        -nomeTipoDestinacaoVotos: String
+        -quantidadeVotos: int
+        -eleitoPosicao: int
+        -posicaoGeral: int
+        -partidoCandidato: Partido
+
+        ..Setters Simples..
+        ..Getters Simples..
+
+        +compareTo(Candidato o)
+        +toString()
+    }
+
+    class Partido{
+        -numeroPartido: int
+        -siglaPartido: String
+        -numeroFederacao: int
+        -votosNaLegenda: int
+        -posicao: int
+        -candidatosDoPartido: List<Candidato>
+
+        ..Setters Simples..
+        ..Getters Simples..
+
+        +getVotosNominais()
+        +getVotosTotais()
+        +getQuantidadeDeEleitosPartido()
+        +getCandidatosList()
+        +candidatoMaisVotadoPartido()
+        +candidatoMenosVotadoPartido()
+        +compareTo(Partido p0)
+    }
+
+    class Eleicao{
+        -candidatos: Map<Integer, Candidato>
+        -partidos: Map<Integer, Partido>
+        -legendasPartidosCandidatos: Map<Integer, Partido>4
+        -votosNominais: int
+        -votosLegenda: int
+        -tipoEleicao: TipoEleicao
+        -dataEleicao: LocalDate
+
+        ..Setters Simples..
+        ..Getters Simples..
+
+        +addPartido(int numeroPartido, String siglaPartido, int numeroFederacao)
+        +addCandidato()
+        +addLegendaPartidoCandidatos(int numeroCandidato, Partido partido)
+        +getNumeroDeVagasDaEleicao()
+        +getCandidatosEleitos()
+        +getTodosOsCandidatos()
+        +getCandidatosMaisVotados()
+        +getCandidatosEleitosSeEleicaoMajoritaria()
+        +getCandidatosEleitosProporcional()
+        +getPartidosList()
+        +getPartidosOrdenadosPorCandidatos()
+        +quantidadeEleitosPorIdade()
+        +quantidadeHomensEleitos()
+        +quantidadeMulheresEleitas()
+    }
+}
+
+package "util.comparators" #DDDDDD{
+    class PartidoComaparadorPorCandidato{
+        +compare(Partido p1, Partido p2)
+    }
+}
+
+package "util.io"{
+    class InputServices{
+        +{static}createBufferedReader(String path)
+        +{static}processarArquivoCandidatos(BufferedReader bufferCandidatos, Eleicao eleicao)
+        +{static}processarArquivoVotacao(BufferedReader bufferVotacao, Eleicao eleicao)
+        -{static}inputFormatter(String currentLine)
+        -{static}updatePartidos(Eleicao eleicao, String[] currentData)
+        -{static}isValidCandidato(String codigoCargo, String codigoDetalhesSituacaoCandidato, int tipoEleicao)
+        -{static} updateCandidato(Eleicao eleicao, String[] currentData, Partido partido)
+        -{static}isCandidatoEleito(String situacao)
+        -{static}updateCandidatosInvalidos(Eleicao eleicao, String[] currentData, Partido partido)
+        -{static}isVotoValido(String codigoCargo, int tipoEleicao, String numeroVotavel)
+        -{static}processarVotosCandidatoValido(Eleicao eleicao, String[] currentData)
+        -{static}processarVotosCandidatoInvalido(Eleicao eleicao, String[] currentData)
+    }
+}
+
+package "util.io"{
+    class OutputServices{
+        +{static}geracaoDeRelatorios(Eleicao eleicao)
+        -{static}numeroDeVagasEleicao(Eleicao eleicao, NumberFormat nf)
+        -{static}candidatosEleitos(Eleicao eleicao, NumberFormat nf)
+        -{static}candidatosMaisVotados(Eleicao eleicao, NumberFormat nf)
+        -{static}candidatosPrejudicados(Eleicao eleicao, NumberFormat nf)
+        -{static}candidatosBeneficiados(Eleicao eleicao, NumberFormat nf)
+        -{static}votacaoPartidosCandidatosEleitos(Eleicao eleicao, NumberFormat nf)
+        -{static}primeiroEUltimoCandidatoDosPartidos(Eleicao eleicao, NumberFormat nf)
+        -{static}eleitosPorIdade(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec)
+        -{static}eleitosPorGenero(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec)
+        -{static}totalVotos(Eleicao eleicao, NumberFormat nf, NumberFormat nfDec)
+        -{static}filtroSingularPlural(int value, String out)
+    }
+}
+
+package "util.exceptions"{
+    class ExceptionArquivoCandidatos
+}
+
+package "util.exceptions"{
+    class ExceptionArquivoPartidos
+}
+
+package "util.exceptions"{
+    class ExceptionDataEleicao
+}
+
+package "util.exceptions"{
+    class ExceptionGeracaoDeRelatorios
+}
+
+package "util.exceptions"{
+    class ExceptionProcessamentoArquivoCandidatos
+}
+
+package "util.exceptions"{
+    class ExceptionProcessamentoArquivoVotacao
+}
+
+package "util.enums"{
+    enum Genero{
+        +MASCULINO
+        +FEMININO
+    }
+}
+
+package "util.enums"{
+    enum TipoEleicao{
+        +ESTADUAL
+        +FEDERAL
+    }
+}
+
+App <.down. Eleicao: <<Instantiate>>
+App <.. InputServices: <<use>>
+App <.. OutputServices: <<use>>
+App <-right- ExceptionArquivoCandidatos
+App <-left- ExceptionArquivoPartidos
+App <-up- ExceptionDataEleicao
+
+Eleicao o-- Partido
+Eleicao o-- Candidato
+
+TipoEleicao <- Eleicao: +tipoEleicao
+Genero <- Candidato: +genero
+
+Candidato <-right-> Partido
+
+Partido <-down- PartidoComaparadorPorCandidato
+
+OutputServices <-down- ExceptionGeracaoDeRelatorios
+
+InputServices <-down- ExceptionProcessamentoArquivoVotacao
+InputServices <-up- ExceptionProcessamentoArquivoCandidatos
+
+@enduml
